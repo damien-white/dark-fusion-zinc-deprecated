@@ -1,12 +1,14 @@
-name: Security Audit # Audit project dependencies on push and on schedule
+name: audit
 
 on:
   push:
     branches:
-      - main
+      - 'main'
     paths:
       - '**/Cargo.toml'
       - '**/Cargo.lock'
+    tags:
+      - 'v*.*.*'
   schedule:
     - cron: '0 0 * * *'
 
