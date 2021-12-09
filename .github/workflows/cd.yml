@@ -9,11 +9,9 @@ on:
       - 'main'
     tags:
       - 'v*.*.*'
-  schedule:
-    - cron: '0 2 * * *'
 
 jobs:
-  docker:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

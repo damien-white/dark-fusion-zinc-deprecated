@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" version="1.1" viewBox="0 0 270 270"
+     xmlns="http://www.w3.org/2000/svg">
+    <g transform="matrix(5.1679 0 0 5.188 -108 -340.27)" fill="#edcc64" stroke="#26263a"
+       stroke-width=".81757" style="paint-order:normal;shape-inside:url(#rect835);white-space:pre"
+       aria-label="Zn">
+        <path d="m29.387 84.63v-5.7531h20.917l-12.611 21.145h11.24v5.5245h-21.374l12.421-20.917h-5.2959z"
+              style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;paint-order:normal"/>
+        <path d="m61.891 94.879c0-0.5207-0.0508-0.98107-0.1524-1.3811s-0.254-0.73978-0.4572-1.0192c-0.1905-0.2794-0.44768-0.48895-0.77152-0.62865s-0.71438-0.20955-1.1716-0.20955c-0.4699 0-0.89218 0.06985-1.2668 0.20955s-0.70168 0.34925-0.98108 0.62865c-0.2667 0.2794-0.46672 0.61912-0.60008 1.0192s-0.20002 0.86042-0.20002 1.3811v10.668h-5.7912v-17.526h5.7912v2.6289c0.254-0.4826 0.55245-0.91122 0.89535-1.2859s0.73025-0.69532 1.162-0.96202c0.4445-0.2667 0.9398-0.46672 1.4859-0.60008s1.143-0.20002 1.7907-0.20002c1.0922 0 2.0352 0.14605 2.8289 0.43815s1.4383 0.73025 1.9336 1.3144 0.86678 1.2859 1.1144 2.105 0.37148 1.7558 0.37148 2.8099v11.278h-5.9817v-5.334z"
+              style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;paint-order:normal"/>
+    </g>
+</svg>

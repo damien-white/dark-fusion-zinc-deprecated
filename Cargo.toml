@@ -8,14 +8,17 @@ name = "zinc"
 
 [[bin]]
 name = "zinc"
-path = "src/main.rs"
+path = "src/bin/main.rs"
 
 [dependencies]
+bytes = "1"
+futures = "0.3"
+hyper = { version = "0.14", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
-serde_yaml = "0.8"
+serde_json = "1"
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 
 [profile.dev]
 # Speed up incremental dev builds without having to disable the debug setting

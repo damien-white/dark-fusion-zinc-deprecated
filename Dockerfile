@@ -1,12 +1,10 @@
-#syntax=docker/dockerfile:1.2
-
 # Multi-stage build leveraging Docker layer caching
 # See: https://github.com/LukeMathWalker/cargo-chef
 FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
 WORKDIR /app
 
 FROM chef AS planner
-COPY .. .
+COPY . .
 # Create a lock file for the application
 RUN cargo chef prepare --recipe-path recipe.json
 
@@ -16,7 +14,7 @@ COPY --from=planner /app/recipe.json recipe.json
 # Build project dependencies and cache them using Docker layer
 RUN cargo chef cook --release --recipe-path recipe.json
 # Build the application
-COPY .. .
+COPY . .
 RUN cargo build --release --bin zinc
 
 ### Runtime stage
@@ -31,15 +29,3 @@ RUN apt-get update -y && \
 
 COPY --from=builder /app/target/release/zinc zinc
 ENTRYPOINT ["./zinc"]
-
-#FROM rust:1.57.0
-#
-#WORKDIR /app
-#
-#COPY . .
-#
-#RUN --mount=type=cache,target=/usr/local/cargo/registry \
-#    --mount=type=cache,target=/app/target \
-#    cargo build --release
-#
-#ENTRYPOINT ["/app/target/release/app"]

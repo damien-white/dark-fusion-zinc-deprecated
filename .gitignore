@@ -16,14 +16,18 @@ target/
 .env*
 !.env.example
 
+# Logs
+*.log
+
 ## Deployment
-.spec/docker-compose.yml
+# FIXME: Ignored during initial development; remove when examples are implemented
 scripts/
+docker/images/
+docker/stacks/
 
 # Config file
-config.yml
-config/*.yml
-!config/default.yml
+config/*
+!config/example.json
 
 ## Workspace Directory and Files
 # JetBrains IDEs
