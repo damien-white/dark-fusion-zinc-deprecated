@@ -1,6 +1,6 @@
 set dotenv-load := true
 
-# Run CI tasks locally
+# Helper for running common CI tasks locally
 ci:
     cargo fmt --all -- --check && \
     cargo clippy -- --D warnings && \

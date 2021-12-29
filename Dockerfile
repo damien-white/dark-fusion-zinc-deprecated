@@ -1,5 +1,4 @@
 # Multi-stage build leveraging Docker layer caching
-# See: https://github.com/LukeMathWalker/cargo-chef
 FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
 WORKDIR /app
 
