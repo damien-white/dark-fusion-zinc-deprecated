@@ -1,22 +1,14 @@
 use std::collections::BTreeMap;
-use std::fmt::Debug;
 
-use crate::tracer::visitor::TracingFieldVisitor;
 use serde_json::json;
-use tracing::span::Attributes;
+use tracing::span::{Attributes, Record};
 use tracing::{Event, Id};
 use tracing_subscriber::layer::Context;
 use tracing_subscriber::registry::LookupSpan;
 use tracing_subscriber::{prelude::*, Layer};
 
-// TODO: Split this into a separate crate
-
-pub(crate) type TraceFieldMap<'a> = BTreeMap<&'a str, serde_json::Value>;
-
-#[derive(Clone, Debug)]
-pub struct TracingFieldStore<'a> {
-    inner: TraceFieldMap<'a>,
-}
+use crate::tracer::store::TracingFieldStore;
+use crate::tracer::visitor::TracingFieldVisitor;
 
 pub(crate) struct TracingFormatLayer;
 
@@ -38,6 +30,20 @@ where
         }
     }
 
+    fn on_record(&self, span: &Id, values: &Record<'_>, ctx: Context<'_, S>) {
+        let recorded_span = ctx.span(span);
+        if let Some(span) = recorded_span {
+            let mut extensions = span.extensions_mut();
+
+            if let Some(store) = extensions.get_mut::<TracingFieldStore>() {
+                let mut visitor = TracingFieldVisitor {
+                    inner: &mut store.inner,
+                };
+                values.record(&mut visitor);
+            }
+        }
+    }
+
     fn on_event(&self, event: &Event<'_>, ctx: Context<'_, S>) {
         let event_scope = ctx.event_scope(event);
 
@@ -46,30 +52,31 @@ where
 
             for span in scope.from_root() {
                 let extensions = span.extensions();
+
                 if let Some(store) = extensions.get::<TracingFieldStore>() {
                     let field_map = &store.inner;
                     registered.push(json!({
-                        "target": event.metadata().target(),
-                        "name": event.metadata().name(),
-                        "level": format!("{:?}", event.metadata().level()),
+                        "target": span.metadata().target(),
+                        "name": span.metadata().name(),
+                        "level": span.metadata().level().to_string(),
                         "fields": field_map,
                     }));
                 }
             }
+
+            let mut fields = BTreeMap::new();
+            let mut visitor = TracingFieldVisitor { inner: &mut fields };
+            event.record(&mut visitor);
+
+            let output = json!({
+                "target": event.metadata().target(),
+                "name": event.metadata().name(),
+                "level": event.metadata().level().to_string(),
+                "fields": fields,
+                "registered": registered,
+            });
+            println!("{}", serde_json::to_string_pretty(&output).unwrap());
         }
-
-        let mut fields = BTreeMap::new();
-        let mut visitor = TracingFieldVisitor { inner: &mut fields };
-        event.record(&mut visitor);
-
-        // let metadata = event.metadata();
-        let output = serde_json::json!({
-            "target": event.metadata().target(),
-            "name": event.metadata().name(),
-            "level": format!("{:?}", event.metadata().level()),
-            "fields": fields,
-        });
-        println!("{}", serde_json::to_string_pretty(&output).unwrap());
     }
 }
 
@@ -82,29 +89,3 @@ pub fn init_trace_logger() {
         .with(TracingFormatLayer)
         .init();
 }
-
-// Initialize console and file tracing loggers at application startup.
-//
-// Provides both per-layer and global filtering by leveraging `Targets`.
-// pub fn initialize_logger() -> std::io::Result<()> {
-//     let console_logger = tracing_subscriber::fmt::layer()
-//         .pretty()
-//         .with_filter(Targets::new().with_default(Level::TRACE));
-//
-//     let log_file = File::create("zinc.log")?;
-//     let file_logger = tracing_subscriber::fmt::layer()
-//         .json()
-//         .with_writer(Arc::new(log_file));
-//
-//     Registry::default()
-//         .with(console_logger)
-//         .with(file_logger)
-//         .with(
-//             Targets::default()
-//                 .with_target("zinc", Level::TRACE)
-//                 .with_target("tokio", Level::DEBUG),
-//         )
-//         .init();
-//
-//     Ok(())
-// }
