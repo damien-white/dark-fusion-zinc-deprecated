@@ -1,17 +1,17 @@
 use std::net::SocketAddr;
 
 use bytes::Bytes;
-use futures::{future, Sink, SinkExt};
+use futures_util::{future, Sink, SinkExt};
 use tokio::net::TcpStream;
 use tokio_stream::{Stream, StreamExt};
 use tokio_util::codec::{BytesCodec, FramedRead, FramedWrite};
 
 #[derive(Debug)]
-pub struct Connection {
+pub struct Client {
     pub stream: TcpStream,
 }
 
-impl Connection {
+impl Client {
     pub async fn init<I, O>(
         address: &SocketAddr,
         mut stdin: I,

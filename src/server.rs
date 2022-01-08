@@ -1,14 +1,14 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use futures::SinkExt;
+use futures_util::SinkExt;
 use parking_lot::Mutex;
 use tokio::net::TcpStream;
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed, LinesCodec};
 use tracing::error;
 
-/// In-memory key-value `Database`
+/// `Database` structure that holds the central application state
 #[derive(Debug, Default)]
 pub struct Database {
     pub entries: Mutex<HashMap<String, String>>,

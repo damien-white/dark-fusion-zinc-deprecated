@@ -15,19 +15,22 @@ name = "zinc"
 name = "zinc"
 path = "src/main.rs"
 
-[[bin]]
+[[example]]
 name = "client"
-path = "src/bin/client.rs"
+path = "examples/client.rs"
 
 [dependencies]
 bytes = "1"
-futures = "0.3"
+#futures = "0.3"
+futures-util = { version = "0.3", features = ["sink"] }
 parking_lot = "0.11"
 tokio = { version = "1", features = ["full"] }
 tokio-util = { version = "0.6", features = ["codec"] }
 tokio-stream = "0.1"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+serde = "1"
+serde_json = "1"
 
 [profile.dev]
 # Speed up incremental dev builds without having to disable the debug setting

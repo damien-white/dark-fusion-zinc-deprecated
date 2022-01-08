@@ -1,12 +1,12 @@
 use tokio_stream::StreamExt;
 use tokio_util::codec::{BytesCodec, FramedRead, FramedWrite};
 
-use zinc::connection::Connection;
-use zinc::logger::initialize_logger;
+use zinc::client::Client;
+use zinc::tracer::init_trace_logger;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    initialize_logger()?;
+    init_trace_logger();
 
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     let address = match args.first() {
@@ -19,7 +19,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let stdin = stdin.map(|b| b.map(|bytes| bytes.freeze()));
     let stdout = FramedWrite::new(tokio::io::stdout(), BytesCodec::new());
 
-    Connection::init(address, stdin, stdout).await?;
+    Client::init(address, stdin, stdout).await?;
 
     Ok(())
 }
