@@ -18,5 +18,5 @@
 //! __WARNING: This project is very unstable. Please do not attempt to use it in
 //! production environments.__
 pub mod client;
+pub mod logger;
 pub mod server;
-pub mod tracer;

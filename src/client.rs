@@ -12,6 +12,7 @@ pub struct Client {
 }
 
 impl Client {
+    #[tracing::instrument(skip(address, stdin, stdout))]
     pub async fn init<I, O>(
         address: &SocketAddr,
         mut stdin: I,

@@ -2,11 +2,11 @@ use tokio_stream::StreamExt;
 use tokio_util::codec::{BytesCodec, FramedRead, FramedWrite};
 
 use zinc::client::Client;
-use zinc::tracer::init_trace_logger;
+use zinc::logger::initialize_logger;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    init_trace_logger();
+    initialize_logger().expect("failed to initialize trace logger");
 
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     let address = match args.first() {
